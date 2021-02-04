@@ -21,7 +21,6 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Site\Settings;
 use Drupal\Core\Url;
 use Drupal\islandora\Form\IslandoraSettingsForm;
-use Drupal\islandora\GeminiLookup;
 use Drupal\node\NodeInterface;
 use Drupal\media\MediaInterface;
 use Drupal\file\FileInterface;
@@ -480,7 +479,8 @@ function islandora_entity_view(array &$build, EntityInterface $entity, EntityVie
         $scheme = \Drupal::service('file_system')->uriScheme($uri);
         $flysystem_config = Settings::get('flysystem');
 
-        // Use the file's path if it's in fedora.  Otherwise do the UUID -> pair tree thang.
+        // Use the file's path if it's in fedora.
+        // Otherwise do the UUID -> pair tree thang.
         if (isset($flysystem_config[$scheme]) && $flysystem_config[$scheme]['driver'] == 'fedora') {
           $parts = parse_url($uri);
           $path = $parts['host'] . $parts['path'];
@@ -492,7 +492,7 @@ function islandora_entity_view(array &$build, EntityInterface $entity, EntityVie
         $fedora_uri = "$fedora_root/$path/fcr:metadata";
       }
       else {
-        // All non-media entities do the UUID -> pair tree thang. 
+        // All non-media entities do the UUID -> pair tree thang.
         $path = $mapper->getFedoraPath($entity->uuid());
         $path = trim($path, '/');
         $fedora_uri = "$fedora_root/$path";
