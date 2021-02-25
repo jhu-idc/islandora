@@ -476,7 +476,7 @@ function islandora_entity_view(array &$build, EntityInterface $entity, EntityVie
         $media_source_service = \Drupal::service('islandora.media_source_service');
         $source_file = $media_source_service->getSourceFile($entity);
         $uri = $source_file->getFileUri();
-        $scheme = \Drupal::service('file_system')->uriScheme($uri);
+        $scheme = \Drupal::service('stream_wrapper_manager')->getScheme($uri);
         $flysystem_config = Settings::get('flysystem');
 
         // Use the file's path if it's in fedora.
